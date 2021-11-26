@@ -57,18 +57,8 @@ export default {
       }
       callback();
     };
-    // var validateOldPass = (rule, value, callback) => {
-    //   if (value === "") {
-    //     callback(new Error("请输入密码"));
-    //   } else {
-    //     if (this.ruleForm.checkPass !== "") {
-    //       this.$refs.ruleForm.validateField("checkPass");
-    //     }
-    //     callback();
-    //   }
-    // };
     var validatePass = (rule, value, callback) => {
-      if (value === "") {
+      if (value === "" || value == undefined) {
         callback(new Error("请输入密码"));
       } else {
         if (this.ruleForm.checkPass !== "") {
@@ -78,7 +68,7 @@ export default {
       }
     };
     var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
+      if (value === "" || value == undefined) {
         callback(new Error("请再次输入密码"));
       } else if (value !== this.ruleForm.pass) {
         callback(new Error("两次输入密码不一致!"));
@@ -100,7 +90,6 @@ export default {
           { required: true, validator: checkUsername, trigger: "blur" },
         ],
         password: [
-          //{ required: true, validator: validateOldPass, trigger: "blur" },
           { required: true, trigger: "blur" },
         ],
         pass: [
@@ -144,6 +133,7 @@ export default {
       });
     },
     resetForm(formName) {
+    this.$refs[formName].resetFields();
       axios
         .get("/selectById/" + this.$route.query.id)
         .then((response) => (this.ruleForm = response.data));
